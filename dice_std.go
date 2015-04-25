@@ -19,7 +19,7 @@ type stdResult struct {
 }
 
 func (r stdResult) String() string {
-	return fmt.Sprintf("%d", r.result)
+	return fmt.Sprintf("%d %v", r.total, r.rolls)
 }
 
 func (stdRoller) Roll(matches []string) (fmt.Stringer, error) {
@@ -47,7 +47,7 @@ func (stdRoller) Roll(matches []string) (fmt.Stringer, error) {
 	}
 
 	for i := int64(0); i < dice; i++ {
-		roll := rand.Intn(sides)
+		roll := rand.Intn(int(sides))
 		result.total += roll
 		result.rolls[i] = roll
 	}
