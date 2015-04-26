@@ -1,8 +1,6 @@
 package dice_test
 
 import (
-	"testing"
-
 	. "github.com/justinian/dice"
 	. "gopkg.in/check.v1"
 )
@@ -10,8 +8,6 @@ import (
 /* =============================================================================
  * Eote dice test suite
  */
-
-func TestEote(t *testing.T) { TestingT(t) }
 
 type eoteSuite struct {
 }

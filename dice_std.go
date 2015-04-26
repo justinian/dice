@@ -7,22 +7,22 @@ import (
 	"strconv"
 )
 
-type stdRoller struct{}
+type StdRoller struct{}
 
 var stdPattern = regexp.MustCompile(`([0-9]+)d([0-9]+)([+-][0-9]+)?$`)
 
-func (stdRoller) Pattern() *regexp.Regexp { return stdPattern }
+func (StdRoller) Pattern() *regexp.Regexp { return stdPattern }
 
-type stdResult struct {
-	rolls []int
-	total int
+type StdResult struct {
+	Rolls []int
+	Total int
 }
 
-func (r stdResult) String() string {
-	return fmt.Sprintf("%d %v", r.total, r.rolls)
+func (r StdResult) String() string {
+	return fmt.Sprintf("%d %v", r.Total, r.Rolls)
 }
 
-func (stdRoller) Roll(matches []string) (fmt.Stringer, error) {
+func (StdRoller) Roll(matches []string) (fmt.Stringer, error) {
 	dice, err := strconv.ParseInt(matches[1], 10, 0)
 	if err != nil {
 		return nil, err
@@ -33,9 +33,9 @@ func (stdRoller) Roll(matches []string) (fmt.Stringer, error) {
 		return nil, err
 	}
 
-	result := stdResult{
-		rolls: make([]int, dice),
-		total: 0,
+	result := StdResult{
+		Rolls: make([]int, dice),
+		Total: 0,
 	}
 
 	if matches[3] != "" {
@@ -43,17 +43,17 @@ func (stdRoller) Roll(matches []string) (fmt.Stringer, error) {
 		if err != nil {
 			return nil, err
 		}
-		result.total += int(bonus)
+		result.Total += int(bonus)
 	}
 
 	for i := int64(0); i < dice; i++ {
-		roll := rand.Intn(int(sides))
-		result.total += roll
-		result.rolls[i] = roll
+		roll := rand.Intn(int(sides)) + 1
+		result.Total += roll
+		result.Rolls[i] = roll
 	}
 	return result, nil
 }
 
 func init() {
-	addRollHandler(stdRoller{})
+	addRollHandler(StdRoller{})
 }
