@@ -18,11 +18,8 @@ func addRollHandler(handler roller) {
 }
 
 /*
-	{regexp.MustCompile(`([0-9]+)d([0-9]+)(e)?v([0-9]+)$`), versusRoll},
-	{regexp.MustCompile(`([0-9]+)d([0-9]+)(e)?o$`), openRoll},
-	{regexp.MustCompile(`([0-9]+)d([0-9]+)(e)?s$`), silRoll},
-	{regexp.MustCompile(`([0-9]+(?:r|b|blk|p|g|y|w)\s*)+`), eoteRoll},
-}
+	open - regexp.MustCompile(`([0-9]+)d([0-9]+)(e)?o$`)
+	sil - regexp.MustCompile(`([0-9]+)d([0-9]+)(e)?s$`)
 */
 
 func Roll(desc string) (fmt.Stringer, error) {
