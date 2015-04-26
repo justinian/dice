@@ -72,7 +72,7 @@ var eoteDice = map[string][]EoteResult{
 
 type EoteRoller struct{}
 
-var eotePattern = regexp.MustCompile(`([0-9]+(?:r|b|blk|p|g|y|w)\s*)+`)
+var eotePattern = regexp.MustCompile(`([0-9]+(?:r|b|blk|p|g|y|w)\s*)+$`)
 var diePattern = regexp.MustCompile(`([0-9]+)(r|b|blk|p|g|y|w)`)
 
 func (EoteRoller) Pattern() *regexp.Regexp { return eotePattern }

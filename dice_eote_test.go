@@ -80,3 +80,8 @@ func (s *eoteSuite) TestForce(c *C) {
 	c.Check(res.S, Equals, 0)
 	c.Check(res.A, Equals, 0)
 }
+
+func (s *eoteSuite) TestBadRoll(c *C) {
+	var roller EoteRoller
+	c.Check(roller.Pattern().FindStringSubmatch("1w 1q"), IsNil)
+}
