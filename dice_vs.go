@@ -1,6 +1,7 @@
 package dice
 
 import (
+	"errors"
 	"fmt"
 	"math/rand"
 	"regexp"
@@ -27,10 +28,16 @@ func (VsRoller) Roll(matches []string) (fmt.Stringer, error) {
 	if err != nil {
 		return nil, err
 	}
+	if dice < 1 {
+		return nil, errors.New("Count must be 1 or more")
+	}
 
 	sides, err := strconv.ParseInt(matches[2], 10, 0)
 	if err != nil {
 		return nil, err
+	}
+	if sides < 2 {
+		return nil, errors.New("Sides must be 2 or more")
 	}
 
 	explode := matches[3] == "e"
