@@ -79,6 +79,7 @@ func (EoteRoller) Pattern() *regexp.Regexp { return eotePattern }
 
 func (EoteRoller) Roll(matches []string) (fmt.Stringer, error) {
 	var res EoteResult
+	diePattern.Longest()
 
 	for _, die := range strings.Split(matches[0], " ") {
 		parts := diePattern.FindStringSubmatch(strings.Trim(die, " \t\r\n"))
