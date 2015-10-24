@@ -79,5 +79,5 @@ func (s *eoteSuite) TestForce(c *C) {
 
 func (s *eoteSuite) TestBadRoll(c *C) {
 	var roller EoteRoller
-	c.Check(roller.Pattern().FindStringSubmatch("1w 1q"), IsNil)
+	c.Check(roller.Pattern().FindStringSubmatch("1l 1q"), IsNil)
 }
