@@ -9,6 +9,7 @@ import (
 )
 
 type EoteResult struct {
+	basicRollResult
 	S int // success
 	A int // advantage
 	T int // triumph
@@ -77,9 +78,10 @@ var diePattern = regexp.MustCompile(`([0-9]+)(r|b|blk|p|g|y|w)`)
 
 func (EoteRoller) Pattern() *regexp.Regexp { return eotePattern }
 
-func (EoteRoller) Roll(matches []string) (fmt.Stringer, error) {
-	var res EoteResult
+func (EoteRoller) Roll(matches []string) (RollResult, error) {
 	diePattern.Longest()
+
+	res := EoteResult{basicRollResult: basicRollResult{matches[0]}}
 
 	for _, die := range strings.Split(matches[0], " ") {
 		parts := diePattern.FindStringSubmatch(strings.Trim(die, " \t\r\n"))

@@ -9,11 +9,12 @@ import (
 
 type StdRoller struct{}
 
-var stdPattern = regexp.MustCompile(`([0-9]+)d([0-9]+)([+-][0-9]+)?$`)
+var stdPattern = regexp.MustCompile(`([0-9]+)d([0-9]+)([+-][0-9]+)?`)
 
 func (StdRoller) Pattern() *regexp.Regexp { return stdPattern }
 
 type StdResult struct {
+	basicRollResult
 	Rolls []int
 	Total int
 }
@@ -22,7 +23,7 @@ func (r StdResult) String() string {
 	return fmt.Sprintf("%d %v", r.Total, r.Rolls)
 }
 
-func (StdRoller) Roll(matches []string) (fmt.Stringer, error) {
+func (StdRoller) Roll(matches []string) (RollResult, error) {
 	dice, err := strconv.ParseInt(matches[1], 10, 0)
 	if err != nil {
 		return nil, err
@@ -34,8 +35,9 @@ func (StdRoller) Roll(matches []string) (fmt.Stringer, error) {
 	}
 
 	result := StdResult{
-		Rolls: make([]int, dice),
-		Total: 0,
+		basicRollResult: basicRollResult{matches[0]},
+		Rolls:           make([]int, dice),
+		Total:           0,
 	}
 
 	if matches[3] != "" {

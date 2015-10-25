@@ -7,10 +7,21 @@ import (
 	"strings"
 )
 
+type RollResult interface {
+	fmt.Stringer
+	Description() string
+}
+
 type roller interface {
 	Pattern() *regexp.Regexp
-	Roll([]string) (fmt.Stringer, error)
+	Roll([]string) (RollResult, error)
 }
+
+type basicRollResult struct {
+	desc string
+}
+
+func (r basicRollResult) Description() string { return r.desc }
 
 var rollHandlers []roller
 
@@ -23,7 +34,7 @@ func addRollHandler(handler roller) {
 	sil - regexp.MustCompile(`([0-9]+)d([0-9]+)(e)?s$`)
 */
 
-func Roll(desc string) (fmt.Stringer, string, error) {
+func Roll(desc string) (RollResult, string, error) {
 	for _, rollHandler := range rollHandlers {
 		rollHandler.Pattern().Longest()
 

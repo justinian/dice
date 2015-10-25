@@ -10,20 +10,23 @@ import (
 
 type VsRoller struct{}
 
-var vsPattern = regexp.MustCompile(`([0-9]+)d([0-9]+)(e|r)?v([0-9]+)$`)
+var vsPattern = regexp.MustCompile(`([0-9]+)d([0-9]+)(e|r)?v([0-9]+)`)
 
 func (VsRoller) Pattern() *regexp.Regexp { return vsPattern }
 
 type VsResult struct {
+	basicRollResult
 	Rolls     []int
 	Successes int
 }
+
+func (r VsResult) Description() string { return r.desc }
 
 func (r VsResult) String() string {
 	return fmt.Sprintf("%d %v", r.Successes, r.Rolls)
 }
 
-func (VsRoller) Roll(matches []string) (fmt.Stringer, error) {
+func (VsRoller) Roll(matches []string) (RollResult, error) {
 	dice, err := strconv.ParseInt(matches[1], 10, 0)
 	if err != nil {
 		return nil, err
@@ -49,8 +52,9 @@ func (VsRoller) Roll(matches []string) (fmt.Stringer, error) {
 	}
 
 	result := VsResult{
-		Rolls:     make([]int, 0, dice),
-		Successes: 0,
+		basicRollResult: basicRollResult{matches[0]},
+		Rolls:           make([]int, 0, dice),
+		Successes:       0,
 	}
 
 	for i := int64(0); i < dice; i++ {

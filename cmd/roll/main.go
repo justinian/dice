@@ -19,6 +19,10 @@ func main() {
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error: %v", err)
 	} else {
-		fmt.Println(reason, res)
+		if reason != "" {
+			fmt.Printf("%s: ", reason)
+		}
+		fmt.Println(res)
+		fmt.Println(res.Description())
 	}
 }
