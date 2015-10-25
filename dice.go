@@ -21,7 +21,7 @@ type basicRollResult struct {
 	desc string
 }
 
-func (r basicRollResult) Description() string { return r.desc }
+func (r basicRollResult) Description() string { return strings.Trim(r.desc, " \t\r\n") }
 
 var rollHandlers []roller
 
