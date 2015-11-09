@@ -9,7 +9,7 @@ import (
 
 type StdRoller struct{}
 
-var stdPattern = regexp.MustCompile(`([0-9]+)d([0-9]+)([+-][0-9]+)?`)
+var stdPattern = regexp.MustCompile(`([0-9]+)d([0-9]+)([+-][0-9]+)?($|\s)`)
 
 func (StdRoller) Pattern() *regexp.Regexp { return stdPattern }
 

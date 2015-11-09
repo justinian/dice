@@ -10,7 +10,7 @@ import (
 
 type VsRoller struct{}
 
-var vsPattern = regexp.MustCompile(`([0-9]+)d([0-9]+)(e|r)?v([0-9]+)`)
+var vsPattern = regexp.MustCompile(`([0-9]+)d([0-9]+)(e|r)?v([0-9]+)($|\s)`)
 
 func (VsRoller) Pattern() *regexp.Regexp { return vsPattern }
 
