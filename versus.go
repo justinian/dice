@@ -10,7 +10,7 @@ import (
 
 type VsRoller struct{}
 
-var vsPattern = regexp.MustCompile(`([0-9]+)d([0-9]+)(e|rr)?v([0-9]+)($|\s)`)
+var vsPattern = regexp.MustCompile(`([0-9]+)d([0-9]+)(e|r)?v([0-9]+)($|\s)`)
 
 func (VsRoller) Pattern() *regexp.Regexp { return vsPattern }
 
@@ -44,7 +44,7 @@ func (VsRoller) Roll(matches []string) (RollResult, error) {
 	}
 
 	explode := matches[3] == "e"
-	reroll := matches[3] == "rr"
+	reroll := matches[3] == "r"
 
 	target, err := strconv.ParseInt(matches[4], 10, 0)
 	if err != nil {
