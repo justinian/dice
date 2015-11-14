@@ -22,6 +22,7 @@ The main entrypoint to the library is the `dice.Roll` function:
 func Roll(desc string) (fmt.Stringer, error)
 ```
 
-The `desc` argument takes any string that matches the formats above and rolls correctly. The result is
-returned as a `fmt.Stringer` for simple printing, but also contains different information based on the
-type of roll. See the individual roll styles for their result structures.
+The `desc` argument takes any string that matches the formats above and rolls
+correctly. The result is returned as a `RollResult` (which is a `fmt.Stringer`
+for simple printing, but also contains different information based on the type
+of roll). See the individual roll styles for their result structures.
