@@ -51,7 +51,7 @@ func (d EoteDie) String() string {
 	}
 
 	if d.D > 0 {
-		results = append(results, strings.Repeat("T", d.D))
+		results = append(results, strings.Repeat("D", d.D))
 	}
 
 	return fmt.Sprintf("%s[%s]", d.Type, strings.Join(results, ""))
@@ -100,7 +100,7 @@ func (r EoteResult) String() string {
 	for i := range r.Rolls {
 		rolls[i] = r.Rolls[i].String()
 	}
-	parts = append(parts, fmt.Sprintf("(%s)", strings.Join(rolls, " ")))
+	parts = append(parts, fmt.Sprintf("\n(%s)", strings.Join(rolls, " ")))
 
 	return strings.Join(parts, " ")
 }
