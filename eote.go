@@ -8,25 +8,63 @@ import (
 	"strings"
 )
 
-type EoteResult struct {
-	basicRollResult
-	S int // success
-	A int // advantage
-	T int // triumph
-	D int // despair
-	F int // force
+type EoteDie struct {
+	Type string
+	S    int // success
+	A    int // advantage
+	T    int // triumph
+	D    int // despair
+	F    int // force
 }
 
-func (r *EoteResult) Add(o EoteResult) {
-	r.S += o.S
-	r.A += o.A
-	r.T += o.T
-	r.D += o.D
-	r.F += o.F
+func (d *EoteDie) Add(o EoteDie) {
+	d.S += o.S
+	d.A += o.A
+	d.T += o.T
+	d.D += o.D
+	d.F += o.F
+}
+
+func (d EoteDie) String() string {
+	results := make([]string, 0, 3)
+
+	if d.S > 0 {
+		results = append(results, strings.Repeat("s", d.S))
+	} else if d.S < 0 {
+		results = append(results, strings.Repeat("f", -d.S))
+	}
+
+	if d.A > 0 {
+		results = append(results, strings.Repeat("a", d.A))
+	} else if d.A < 0 {
+		results = append(results, strings.Repeat("d", -d.A))
+	}
+
+	if d.F > 0 {
+		results = append(results, strings.Repeat("L", d.F))
+	} else if d.F < 0 {
+		results = append(results, strings.Repeat("D", -d.F))
+	}
+
+	if d.T > 0 {
+		results = append(results, strings.Repeat("T", d.T))
+	}
+
+	if d.D > 0 {
+		results = append(results, strings.Repeat("T", d.D))
+	}
+
+	return fmt.Sprintf("%s[%s]", d.Type, strings.Join(results, ""))
+}
+
+type EoteResult struct {
+	basicRollResult
+	EoteDie
+	Rolls []EoteDie
 }
 
 func (r EoteResult) String() string {
-	parts := make([]string, 0, 5)
+	parts := make([]string, 0, 6)
 
 	if r.S > 0 {
 		parts = append(parts, fmt.Sprintf("%d success", r.S))
@@ -58,10 +96,16 @@ func (r EoteResult) String() string {
 		parts = append(parts, "no result")
 	}
 
+	rolls := make([]string, len(r.Rolls))
+	for i := range r.Rolls {
+		rolls[i] = r.Rolls[i].String()
+	}
+	parts = append(parts, fmt.Sprintf("(%s)", strings.Join(rolls, " ")))
+
 	return strings.Join(parts, " ")
 }
 
-var eoteDice = map[string][]EoteResult{
+var eoteDice = map[string][]EoteDie{
 	"b":   {{}, {}, {A: 1}, {A: 2}, {S: 1}, {S: 1, A: 1}},
 	"blk": {{}, {}, {A: -1}, {A: -1}, {S: -1}, {S: -1}},
 	"g":   {{}, {A: 1}, {A: 1}, {A: 2}, {S: 1}, {S: 1}, {S: 1, A: 1}, {S: 2}},
@@ -100,7 +144,9 @@ func (EoteRoller) Roll(matches []string) (RollResult, error) {
 		}
 
 		for i := int64(0); i < num; i++ {
-			res.Add(choices[rand.Intn(len(choices))])
+			die := choices[rand.Intn(len(choices))]
+			res.Add(die)
+			res.Rolls = append(res.Rolls, die)
 		}
 	}
 
@@ -108,5 +154,11 @@ func (EoteRoller) Roll(matches []string) (RollResult, error) {
 }
 
 func init() {
+	for name := range eoteDice {
+		for i := range eoteDice[name] {
+			eoteDice[name][i].Type = name
+		}
+	}
+
 	addRollHandler(EoteRoller{})
 }
