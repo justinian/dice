@@ -100,7 +100,7 @@ func (r EoteResult) String() string {
 	for i := range r.Rolls {
 		rolls[i] = r.Rolls[i].String()
 	}
-	parts = append(parts, fmt.Sprintf("\n(%s)", strings.Join(rolls, " ")))
+	parts = append(parts, fmt.Sprintf("\n%s", strings.Join(rolls, " ")))
 
 	return strings.Join(parts, " ")
 }
