@@ -54,3 +54,38 @@ func (s *stdSuite) TestCount(c *C) {
 	c.Assert(err, IsNil)
 	c.Assert(res.Rolls, HasLen, 100)
 }
+
+func (s *stdSuite) TestBonus(c *C) {
+	var roller StdRoller
+
+	r, err := roller.Roll([]string{"1d1+1", "1", "1", "1"})
+	res := r.(StdResult)
+
+	c.Assert(err, IsNil)
+	c.Assert(res.String(), Equals, "2 [1]")
+}
+
+func (s *stdSuite) TestNumTooBig(c *C) {
+	var roller StdRoller
+
+	//const bigNum = int(^uint(0)>>1) + 1
+	const bigNum = "9223372036854775808"
+
+	r, err := roller.Roll([]string{"1d1+1", bigNum, "1", "1"})
+
+	c.Assert(err, NotNil)
+	c.Assert(err.Error(), Matches, "*value out of range")
+	c.Assert(r, IsNil)
+
+	r, err = roller.Roll([]string{"1d1+1", "1", bigNum, "1"})
+
+	c.Assert(err, NotNil)
+	c.Assert(err.Error(), Matches, "*value out of range")
+	c.Assert(r, IsNil)
+
+	r, err = roller.Roll([]string{"1d1+1", "1", "1", bigNum})
+
+	c.Assert(err, NotNil)
+	c.Assert(err.Error(), Matches, "*value out of range")
+	c.Assert(r, IsNil)
+}

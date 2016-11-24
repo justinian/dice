@@ -33,6 +33,8 @@ func (s *eoteSuite) TestPositive(c *C) {
 	res := r.(EoteResult)
 
 	c.Assert(err, IsNil)
+	c.Assert(res.EoteDie.String(), Matches, "\\[s+a+T+\\]")
+	c.Assert(res.String(), Matches, "(?s).*\\d+ success \\d+ advantage \\(\\d+ triumph\\)(?s).*")
 	c.Check(res.D, Equals, 0)
 	c.Check(res.F, Equals, 0)
 
@@ -52,6 +54,8 @@ func (s *eoteSuite) TestNegative(c *C) {
 	res := r.(EoteResult)
 
 	c.Assert(err, IsNil)
+	c.Assert(res.EoteDie.String(), Matches, "\\[f+d+D+\\]")
+	c.Assert(res.String(), Matches, "(?s).*\\d+ failure \\d+ disadvantage \\(\\d+ despair\\)(?s).*")
 	c.Check(res.T, Equals, 0)
 	c.Check(res.F, Equals, 0)
 
