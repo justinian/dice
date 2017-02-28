@@ -5,25 +5,29 @@ import (
 	"math/rand"
 	"regexp"
 	"strconv"
+	"sort"
 )
 
 type StdRoller struct{}
 
-var stdPattern = regexp.MustCompile(`([0-9]+)d([0-9]+)([+-][0-9]+)?($|\s)`)
+var stdPattern = regexp.MustCompile(`([0-9]+)d([0-9]+)((kh|dl|kl|dh)([0-9]+))?([+-][0-9]+)?($|\s)`)
 
 func (StdRoller) Pattern() *regexp.Regexp { return stdPattern }
 
 type StdResult struct {
 	basicRollResult
 	Rolls []int
+	Dropped []int
 	Total int
 }
 
 func (r StdResult) String() string {
-	return fmt.Sprintf("%d %v", r.Total, r.Rolls)
+	return fmt.Sprintf("%d %v (%v)", r.Total, r.Rolls, r.Dropped)
 }
 
 func (StdRoller) Roll(matches []string) (RollResult, error) {
+	fmt.Println( matches )
+
 	dice, err := strconv.ParseInt(matches[1], 10, 0)
 	if err != nil {
 		return nil, err
@@ -34,25 +38,61 @@ func (StdRoller) Roll(matches []string) (RollResult, error) {
 		return nil, err
 	}
 
+	keep := ""
+	num := 0
+	if matches[4] != "" {
+		number, err := strconv.ParseInt(matches[5], 10, 0)
+		if err != nil {
+			return nil, err
+		}
+		num = int(number)
+		keep = matches[4]
+	}
+	
 	result := StdResult{
 		basicRollResult: basicRollResult{matches[0]},
 		Rolls:           make([]int, dice),
+		Dropped:		 nil,
 		Total:           0,
 	}
 
-	if matches[3] != "" {
-		bonus, err := strconv.ParseInt(matches[3], 10, 0)
+	if matches[6] != "" {
+		bonus, err := strconv.ParseInt(matches[6], 10, 0)
 		if err != nil {
 			return nil, err
 		}
 		result.Total += int(bonus)
 	}
 
-	for i := int64(0); i < dice; i++ {
+	for i := 0; i < len(result.Rolls); i++ {
 		roll := rand.Intn(int(sides)) + 1
-		result.Total += roll
 		result.Rolls[i] = roll
 	}
+
+	sort.Ints( result.Rolls )
+	size := len( result.Rolls )
+	
+	if keep == "kh" {
+		result.Dropped = result.Rolls[:size-num]
+		result.Rolls = result.Rolls[size-num:]
+	}
+	if keep == "dl" {
+		result.Dropped = result.Rolls[:num]
+		result.Rolls = result.Rolls[num+1:]
+	}
+	if keep == "kl" {
+		result.Dropped = result.Rolls[num+1:]
+		result.Rolls = result.Rolls[:num]
+	}
+	if keep == "dh" {
+		result.Dropped = result.Rolls[size-num:]
+		result.Rolls = result.Rolls[:size-num]
+	}
+	
+	for i := 0; i < len(result.Rolls); i++ {
+		result.Total += result.Rolls[i]
+	}
+
 	return result, nil
 }
 
