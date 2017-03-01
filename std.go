@@ -4,21 +4,21 @@ import (
 	"fmt"
 	"math/rand"
 	"regexp"
-	"strconv"
 	"sort"
+	"strconv"
 )
 
 type StdRoller struct{}
 
-var stdPattern = regexp.MustCompile(`([0-9]+)d([0-9]+)((kh|dl|kl|dh)([0-9]+))?([+-][0-9]+)?($|\s)`)
+var stdPattern = regexp.MustCompile(`([0-9]+)d([0-9]+)((k|d|kh|dl|kl|dh)([0-9]+))?([+-][0-9]+)?($|\s)`)
 
 func (StdRoller) Pattern() *regexp.Regexp { return stdPattern }
 
 type StdResult struct {
 	basicRollResult
-	Rolls []int
+	Rolls   []int
 	Dropped []int
-	Total int
+	Total   int
 }
 
 func (r StdResult) String() string {
@@ -26,8 +26,6 @@ func (r StdResult) String() string {
 }
 
 func (StdRoller) Roll(matches []string) (RollResult, error) {
-	fmt.Println( matches )
-
 	dice, err := strconv.ParseInt(matches[1], 10, 0)
 	if err != nil {
 		return nil, err
@@ -48,11 +46,11 @@ func (StdRoller) Roll(matches []string) (RollResult, error) {
 		num = int(number)
 		keep = matches[4]
 	}
-	
+
 	result := StdResult{
 		basicRollResult: basicRollResult{matches[0]},
 		Rolls:           make([]int, dice),
-		Dropped:		 nil,
+		Dropped:         nil,
 		Total:           0,
 	}
 
@@ -69,26 +67,28 @@ func (StdRoller) Roll(matches []string) (RollResult, error) {
 		result.Rolls[i] = roll
 	}
 
-	sort.Ints( result.Rolls )
-	size := len( result.Rolls )
-	
-	if keep == "kh" {
+	sort.Ints(result.Rolls)
+	size := len(result.Rolls)
+
+	switch keep {
+	case "k":
+		fallthrough
+	case "kh":
 		result.Dropped = result.Rolls[:size-num]
 		result.Rolls = result.Rolls[size-num:]
-	}
-	if keep == "dl" {
+	case "d":
+		fallthrough
+	case "dl":
 		result.Dropped = result.Rolls[:num]
 		result.Rolls = result.Rolls[num+1:]
-	}
-	if keep == "kl" {
+	case "kl":
 		result.Dropped = result.Rolls[num+1:]
 		result.Rolls = result.Rolls[:num]
-	}
-	if keep == "dh" {
+	case "dh":
 		result.Dropped = result.Rolls[size-num:]
 		result.Rolls = result.Rolls[:size-num]
 	}
-	
+
 	for i := 0; i < len(result.Rolls); i++ {
 		result.Total += result.Rolls[i]
 	}
