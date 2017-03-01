@@ -80,9 +80,9 @@ func (StdRoller) Roll(matches []string) (RollResult, error) {
 		fallthrough
 	case "dl":
 		result.Dropped = result.Rolls[:num]
-		result.Rolls = result.Rolls[num+1:]
+		result.Rolls = result.Rolls[num:]
 	case "kl":
-		result.Dropped = result.Rolls[num+1:]
+		result.Dropped = result.Rolls[num:]
 		result.Rolls = result.Rolls[:num]
 	case "dh":
 		result.Dropped = result.Rolls[size-num:]

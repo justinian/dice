@@ -33,7 +33,7 @@ var _ = Suite(&stdSuite{})
 func (s *stdSuite) TestBounds(c *C) {
 	var roller StdRoller
 
-	r, err := roller.Roll([]string{"100d2", "100", "2", ""})
+	r, err := roller.Roll([]string{"100d2", "100", "2", "", "", "", ""})
 	res := r.(StdResult)
 
 	c.Assert(err, IsNil)
@@ -48,9 +48,42 @@ func (s *stdSuite) TestBounds(c *C) {
 func (s *stdSuite) TestCount(c *C) {
 	var roller StdRoller
 
-	r, err := roller.Roll([]string{"100d2", "100", "2", ""})
+	r, err := roller.Roll([]string{"100d2", "100", "2", "", "", "", ""})
 	res := r.(StdResult)
 
 	c.Assert(err, IsNil)
 	c.Assert(res.Rolls, HasLen, 100)
+}
+
+func (s *stdSuite) TestAdd(c *C) {
+	var roller StdRoller
+
+	r, err := roller.Roll([]string{"1d1+13", "1", "1", "", "", "", "13"})
+	res := r.(StdResult)
+
+	c.Assert(err, IsNil)
+	c.Assert(res.Rolls, HasLen, 1)
+	c.Assert(res.Total, Equals, 14)
+}
+
+func (s *stdSuite) TestKeep(c *C) {
+	var roller StdRoller
+
+	r, err := roller.Roll([]string{"10d6", "10", "6", "k2", "k", "2", ""})
+	res := r.(StdResult)
+
+	c.Assert(err, IsNil)
+	c.Assert(res.Rolls, HasLen, 2)
+	c.Assert(res.Dropped, HasLen, 8)
+}
+
+func (s *stdSuite) TestDrop(c *C) {
+	var roller StdRoller
+
+	r, err := roller.Roll([]string{"10d6", "10", "6", "d2", "d", "2", ""})
+	res := r.(StdResult)
+
+	c.Assert(err, IsNil)
+	c.Assert(res.Rolls, HasLen, 8)
+	c.Assert(res.Dropped, HasLen, 2)
 }
