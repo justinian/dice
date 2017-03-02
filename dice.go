@@ -10,6 +10,7 @@ import (
 type RollResult interface {
 	fmt.Stringer
 	Description() string
+	Int() int
 }
 
 type roller interface {

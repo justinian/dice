@@ -26,6 +26,10 @@ func (r VsResult) String() string {
 	return fmt.Sprintf("%d %v", r.Successes, r.Rolls)
 }
 
+func (r VsResult) Int() int {
+	return r.Successes
+}
+
 func (VsRoller) Roll(matches []string) (RollResult, error) {
 	dice, err := strconv.ParseInt(matches[1], 10, 0)
 	if err != nil {

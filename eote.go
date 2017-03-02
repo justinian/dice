@@ -105,6 +105,10 @@ func (r EoteResult) String() string {
 	return strings.Join(parts, " ")
 }
 
+func (r EoteResult) Int() int {
+	return r.S
+}
+
 var eoteDice = map[string][]EoteDie{
 	"b":   {{}, {}, {A: 1}, {A: 2}, {S: 1}, {S: 1, A: 1}},
 	"blk": {{}, {}, {A: -1}, {A: -1}, {S: -1}, {S: -1}},

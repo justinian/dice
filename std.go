@@ -25,6 +25,10 @@ func (r StdResult) String() string {
 	return fmt.Sprintf("%d %v (%v)", r.Total, r.Rolls, r.Dropped)
 }
 
+func (r StdResult) Int() int {
+	return r.Total
+}
+
 func (StdRoller) Roll(matches []string) (RollResult, error) {
 	dice, err := strconv.ParseInt(matches[1], 10, 0)
 	if err != nil {
