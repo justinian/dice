@@ -36,3 +36,47 @@ func TestRoll(t *testing.T) {
 		t.Fatalf("%s is not a VsResult", roll)
 	}
 }
+
+func TestText(t *testing.T) {
+	roll := "1d20"
+	why := "death save"
+	res, reason, _ := Roll(roll + " " + why)
+	if res.Description() != roll {
+		t.Fatalf("desc does not match roll: %s", roll)
+	}
+	if reason != why {
+		t.Fatalf("reason does not match reason: %s", reason)
+	}
+
+	roll = "1d20v10"
+	res, _, _ = Roll(roll)
+	if res.Description() != roll {
+		t.Fatalf("desc does not match roll: %s", roll)
+	}
+
+	roll = "1w1b2y"
+	res, _, _ = Roll(roll)
+	if res.Description() != roll {
+		t.Fatalf("desc does not match roll: %s", roll)
+	}
+}
+
+func TestResultInt(t *testing.T) {
+	roll := "6d1" // aka 6
+	res, _, _ := Roll(roll)
+	if res.Int() != 6 {
+		t.Fatalf("%s does not evaluate to 6", roll)
+	}
+
+	roll = "10d10v1" // 10 successes
+	res, _, _ = Roll(roll)
+	if res.Int() != 10 {
+		t.Fatalf("%s fails to always roll at least 1", roll)
+	}
+
+	roll = "1w" // no success possible
+	res, _, _ = Roll(roll)
+	if res.Int() != 0 {
+		t.Fatalf("%s fails to roll zero successes", roll)
+	}
+}
