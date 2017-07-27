@@ -3,6 +3,7 @@
 This is a simple library for rolling RPG-style dice. The following formats are supported:
 
 * Standard: `xdy[[k|d][h|l]z][+/-c]` - rolls and sums x y-sided dice, keeping or dropping the lowest or highest z dice and optionally adding or subtracting c. Example: 4d6kh3+4
+* Fudge: `xdf[+/-c]` - rolls and sums x fudge dice (Dice that returns numbers between -1 and 1), and optionally adding or subtracting c. Example: 4df+4
 * Versus: `xdy[e|r]vt` - rolls x y-sided dice, counting the number that roll t or greater.
 * EotE: `xc [xc ...]` - rolls x dice of color c (b, blk, g, p, r, w, y) and returns the aggregate result.
 
