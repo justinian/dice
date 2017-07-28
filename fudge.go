@@ -49,15 +49,11 @@ func (FudgeRoller) Roll(matches []string) (RollResult, error) {
 	}
 
 	for i := 0; i < len(result.Rolls); i++ {
-		roll := rand.Intn(3) - 1
-		result.Rolls[i] = roll
+		result.Rolls[i] = rand.Intn(3) - 1
+		result.Total += result.Rolls[i]
 	}
 
 	sort.Ints(result.Rolls)
-
-	for i := 0; i < len(result.Rolls); i++ {
-		result.Total += result.Rolls[i]
-	}
 
 	return result, nil
 }
