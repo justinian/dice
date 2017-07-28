@@ -13,8 +13,7 @@ import (
 
 func TestFudge(t *testing.T) { TestingT(t) }
 
-type fudgeSuite struct {
-}
+type fudgeSuite struct{}
 
 /*
 func (s *DiceSuite) SetUpSuite(c *C) {
