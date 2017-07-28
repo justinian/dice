@@ -18,7 +18,7 @@ type fudgeSuite struct{}
 var _ = Suite(&fudgeSuite{})
 
 /* =============================================================================
- * Std dice test cases
+ * Fudge dice test cases
  */
 
 func (s *fudgeSuite) TestBounds(c *C) {
