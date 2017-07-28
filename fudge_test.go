@@ -15,14 +15,6 @@ func TestFudge(t *testing.T) { TestingT(t) }
 
 type fudgeSuite struct{}
 
-/*
-func (s *DiceSuite) SetUpSuite(c *C) {
-}
-
-func (s *DiceSuite) SetUpTest(c *C) {
-}
-*/
-
 var _ = Suite(&fudgeSuite{})
 
 /* =============================================================================
