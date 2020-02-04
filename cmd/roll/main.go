@@ -17,7 +17,7 @@ func main() {
 	res, reason, err := dice.Roll(rollDesc)
 
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error: %v", err)
+		fmt.Fprintf(os.Stderr, "Error: %v\n", err)
 	} else {
 		if reason != "" {
 			fmt.Printf("%s: ", reason)
