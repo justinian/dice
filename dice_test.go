@@ -21,6 +21,22 @@ func TestRoll(t *testing.T) {
 		t.Fatalf("err not detected in %s", roll)
 	}
 
+	roll = "4d0"
+	_, _, err = Roll(roll)
+	if err != nil {
+		t.Logf("err '%v' properly detected in %s", err, roll)
+	} else {
+		t.Fatalf("err not detected in %s", roll)
+	}
+
+	roll = "4d0v5"
+	_, _, err = Roll(roll)
+	if err != nil {
+		t.Logf("err '%v' properly detected in %s", err, roll)
+	} else {
+		t.Fatalf("err not detected in %s", roll)
+	}
+
 	roll = "3b4bl"
 	_, reason, err := Roll(roll)
 	if reason == "4bl" {

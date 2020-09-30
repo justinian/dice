@@ -1,6 +1,7 @@
 package dice
 
 import (
+	"errors"
 	"fmt"
 	"math/rand"
 	"regexp"
@@ -38,6 +39,9 @@ func (StdRoller) Roll(matches []string) (RollResult, error) {
 	sides, err := strconv.ParseInt(matches[2], 10, 0)
 	if err != nil {
 		return nil, err
+	}
+	if sides <= 0 {
+		return nil, errors.New("Sides must be 1 or more")
 	}
 
 	keep := ""
