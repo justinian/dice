@@ -1,5 +1,8 @@
 # Golang dice
 
+![Go Test](https://github.com/betorvs/dice/workflows/Go%20Test/badge.svg)
+[![Coverage Status](https://coveralls.io/repos/github/betorvs/dice/badge.svg?branch=main)](https://coveralls.io/github/betorvs/dice?branch=main)
+
 This is a simple library for rolling RPG-style dice. The following formats are supported:
 
 * Standard: `xdy[[k|d][h|l]z][+/-c]` - rolls and sums x y-sided dice, keeping or dropping the lowest or highest z dice and optionally adding or subtracting c. Example: 4d6kh3+4

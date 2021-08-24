@@ -1,0 +1,25 @@
+name: Test Coveralls
+
+on: [push]
+
+jobs:
+  test:
+    name: coverage
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install Go
+        if: success()
+        uses: actions/setup-go@v2
+        with:
+          go-version: 1.16.x
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Calc coverage
+        run: go test -v ./... -covermode=count -coverprofile=coverage.out
+      - name: gcov2lcov-action
+        uses: jandelgado/gcov2lcov-action@v1.0.8
+      - name: Coveralls
+        uses: coverallsapp/github-action@master
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path-to-lcov: coverage.lcov

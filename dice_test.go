@@ -3,7 +3,7 @@ package dice_test
 import (
 	"testing"
 
-	. "github.com/justinian/dice"
+	. "github.com/betorvs/dice"
 )
 
 func TestRoll(t *testing.T) {
