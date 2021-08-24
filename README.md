@@ -16,7 +16,7 @@ to the pool instead.
 
 ## Installation
 
-The usual `go get github.com/justinian/dice`.
+The usual `go get github.com/betorvs/dice`.
 
 ## Usage
 
@@ -30,3 +30,7 @@ The `desc` argument takes any string that matches the formats above and rolls
 correctly. The result is returned as a `RollResult` (which is a `fmt.Stringer`
 for simple printing, but also contains different information based on the type
 of roll). See the individual roll styles for their result structures.
+
+## Reference
+
+Source: [dice](https://github.com/justinian/dice)
