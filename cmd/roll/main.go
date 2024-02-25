@@ -11,7 +11,7 @@ import (
 )
 
 func main() {
-	rand.Seed(time.Now().UnixNano())
+	rand.New(rand.NewSource(time.Now().UnixNano()))
 
 	rollDesc := strings.Join(os.Args[1:], " ")
 	res, reason, err := dice.Roll(rollDesc)
