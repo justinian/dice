@@ -51,6 +51,39 @@ func TestRoll(t *testing.T) {
 	if _, ok := res.(VsResult); !ok {
 		t.Fatalf("%s is not a VsResult", roll)
 	}
+
+	// Trying to keep or drop too many dice
+	roll = "2d6k5"
+	_, _, err = Roll(roll)
+	if err != nil {
+		t.Logf("err '%v' properly detected in %s", err, roll)
+	} else {
+		t.Fatalf("err not detected in %s", roll)
+	}
+
+	roll = "2d6kl5"
+	_, _, err = Roll(roll)
+	if err != nil {
+		t.Logf("err '%v' properly detected in %s", err, roll)
+	} else {
+		t.Fatalf("err not detected in %s", roll)
+	}
+
+	roll = "2d6dh5"
+	_, _, err = Roll(roll)
+	if err != nil {
+		t.Logf("err '%v' properly detected in %s", err, roll)
+	} else {
+		t.Fatalf("err not detected in %s", roll)
+	}
+
+	roll = "2d6dl5"
+	_, _, err = Roll(roll)
+	if err != nil {
+		t.Logf("err '%v' properly detected in %s", err, roll)
+	} else {
+		t.Fatalf("err not detected in %s", roll)
+	}
 }
 
 func TestText(t *testing.T) {
