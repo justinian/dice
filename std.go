@@ -82,19 +82,33 @@ func (StdRoller) Roll(matches []string) (RollResult, error) {
 	case "k":
 		fallthrough
 	case "kh":
-		result.Dropped = result.Rolls[:size-num]
-		result.Rolls = result.Rolls[size-num:]
+		slice := size - num
+		if slice < 0 {
+			return nil, errors.New("Can't keep more dice than rolled")
+		}
+		result.Dropped = result.Rolls[:slice]
+		result.Rolls = result.Rolls[slice:]
 	case "d":
 		fallthrough
 	case "dl":
+		if num > size {
+			return nil, errors.New("Can't drop more dice than rolled")
+		}
 		result.Dropped = result.Rolls[:num]
 		result.Rolls = result.Rolls[num:]
 	case "kl":
+		if num > size {
+			return nil, errors.New("Can't keep more dice than rolled")
+		}
 		result.Dropped = result.Rolls[num:]
 		result.Rolls = result.Rolls[:num]
 	case "dh":
-		result.Dropped = result.Rolls[size-num:]
-		result.Rolls = result.Rolls[:size-num]
+		slice := size - num
+		if slice < 0 {
+			return nil, errors.New("Can't drop more dice than rolled")
+		}
+		result.Dropped = result.Rolls[slice:]
+		result.Rolls = result.Rolls[:slice]
 	}
 
 	for i := 0; i < len(result.Rolls); i++ {
