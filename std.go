@@ -23,7 +23,11 @@ type StdResult struct {
 }
 
 func (r StdResult) String() string {
-	return fmt.Sprintf("%d %v (%v)", r.Total, r.Rolls, r.Dropped)
+	if (len(r.Dropped) > 0) {
+		return fmt.Sprintf("%d %v (%v)", r.Total, r.Rolls, r.Dropped)
+	} else {
+		return fmt.Sprintf("%d %v", r.Total, r.Rolls)
+	}
 }
 
 func (r StdResult) Int() int {
